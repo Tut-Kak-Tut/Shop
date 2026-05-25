@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart — FurniShop</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container navbar-inner">
+    <a href="/static/index.html" class="navbar-brand">FurniShop</a>
+    <ul class="navbar-links">
+      <li><a href="/static/index.html">Shop</a></li>
+      <li><a href="/static/cart.html" class="active">Cart <span id="nav-cart-badge"></span></a></li>
+      <li><a href="/static/profile.html" id="nav-profile" style="display:none">Profile</a></li>
+      <li><a href="/static/admin.html" id="nav-admin" style="display:none">Admin</a></li>
+      <li><a href="/static/auth.html" id="nav-login" class="btn-nav-login">Sign In</a></li>
+      <li><a href="#" id="nav-logout" style="display:none">Sign Out</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container cart-page">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+    <h1 style="font-size:1.5rem">Shopping Cart</h1>
+    <button id="clear-cart-btn" class="btn btn-secondary btn-sm" style="display:none">Clear cart</button>
+  </div>
+
+  <div id="cart-alert"></div>
+
+  <div class="cart-layout">
+    <div class="card" style="padding:0">
+      <div id="cart-items"></div>
+    </div>
+    <div>
+      <div class="card cart-summary" id="cart-summary"></div>
+    </div>
+  </div>
+</div>
+
+<script src="/static/js/api.js"></script>
+<script src="/static/js/cart.js"></script>
+</body>
+</html>

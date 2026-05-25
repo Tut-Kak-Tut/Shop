@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product — FurniShop</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container navbar-inner">
+    <a href="/static/index.html" class="navbar-brand">FurniShop</a>
+    <ul class="navbar-links">
+      <li><a href="/static/index.html">Shop</a></li>
+      <li><a href="/static/cart.html">Cart <span id="nav-cart-badge"></span></a></li>
+      <li><a href="/static/profile.html" id="nav-profile" style="display:none">Profile</a></li>
+      <li><a href="/static/admin.html" id="nav-admin" style="display:none">Admin</a></li>
+      <li><a href="/static/auth.html" id="nav-login" class="btn-nav-login">Sign In</a></li>
+      <li><a href="#" id="nav-logout" style="display:none">Sign Out</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container product-detail">
+  <div class="breadcrumb">
+    <a href="/static/index.html">Shop</a>
+    <span>›</span>
+    <span id="breadcrumb-cat">Category</span>
+    <span>›</span>
+    <span id="breadcrumb-name">Product</span>
+  </div>
+
+  <div id="product-alert"></div>
+  <div id="product-content">
+    <div class="empty-state"><div class="spinner"></div></div>
+  </div>
+</div>
+
+<script src="/static/js/api.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+  const params = new URLSearchParams(window.location.search);
+  const productId = params.get("id");
+  if (!productId) { window.location.href = "/static/index.html"; return; }
+
+  try {
+    const p = await apiFetch("/products/" + productId);
+    document.title = p.name + " — FurniShop";
+
+    document.getElementById("breadcrumb-cat").textContent = p.category ? p.category.name : "All";
+    document.getElementById("breadcrumb-name").textContent = p.name;
+
+    const stockBadge = p.stock > 5
+      ? `<span class="badge badge-success">In stock (${p.stock})</span>`
+      : p.stock > 0
+        ? `<span class="badge badge-warning">Low stock (${p.stock} left)</span>`
+        : `<span class="badge badge-danger">Out of stock</span>`;
+
+    document.getElementById("product-content").innerHTML = `
+      <div class="product-detail-grid">
+        <div>
+          <img class="product-detail-img" src="${p.image_url || 'https://placehold.co/600x450/E8E0D5/8B6F47?text=No+Image'}" alt="${p.name}">
+        </div>
+        <div class="product-detail-info">
+          <p class="product-detail-cat">${p.category ? p.category.name : ''}</p>
+          <h1>${p.name}</h1>
+          <div class="product-detail-price">$${Number(p.price).toFixed(2)}</div>
+          <div class="product-detail-meta">
+            ${p.material ? `<span>Material</span><span>${p.material}</span>` : ''}
+            ${p.color ? `<span>Color</span><span>${p.color}</span>` : ''}
+            <span>Availability</span><span>${stockBadge}</span>
+          </div>
+          ${p.description ? `<p class="product-detail-desc">${p.description}</p>` : ''}
+          <div id="add-alert" style="margin-bottom:0.75rem"></div>
+          ${p.stock > 0
+            ? `<div style="display:flex;gap:0.75rem;align-items:center">
+                <input type="number" id="qty-input" value="1" min="1" max="${p.stock}" class="form-control" style="width:80px">
+                <button class="btn btn-primary" onclick="addToCart(${p.id})">Add to Cart</button>
+               </div>`
+            : `<button class="btn btn-secondary" disabled>Out of Stock</button>`
+          }
+        </div>
+      </div>
+    `;
+  } catch (err) {
+    document.getElementById("product-content").innerHTML =
+      `<div class="empty-state"><h3>Product not found</h3><a href="/static/index.html">Back to shop</a></div>`;
+  }
+});
+
+async function addToCart(productId) {
+  if (!isLoggedIn()) { window.location.href = "/static/auth.html"; return; }
+  const qty = parseInt(document.getElementById("qty-input").value) || 1;
+  try {
+    await apiFetch("/cart/items", { method: "POST", body: JSON.stringify({ product_id: productId, quantity: qty }) });
+    showAlert("add-alert", "Added to cart!", "success");
+    updateCartBadge();
+  } catch (err) {
+    showAlert("add-alert", err.message);
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile — FurniShop</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container navbar-inner">
+    <a href="/static/index.html" class="navbar-brand">FurniShop</a>
+    <ul class="navbar-links">
+      <li><a href="/static/index.html">Shop</a></li>
+      <li><a href="/static/cart.html">Cart <span id="nav-cart-badge"></span></a></li>
+      <li><a href="/static/profile.html" class="active" id="nav-profile">Profile</a></li>
+      <li><a href="/static/admin.html" id="nav-admin" style="display:none">Admin</a></li>
+      <li><a href="/static/auth.html" id="nav-login" class="btn-nav-login" style="display:none">Sign In</a></li>
+      <li><a href="#" id="nav-logout">Sign Out</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container profile-page">
+  <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
+    <h1 style="font-size:1.5rem">My Profile</h1>
+    <span id="p-admin-badge" class="badge badge-warning" style="display:none">Admin</span>
+  </div>
+  <p style="font-size:0.875rem;color:var(--color-text-muted);margin-bottom:1.5rem">
+    Member since: <strong id="p-member-since">—</strong>
+  </p>
+
+  <div id="profile-alert"></div>
+
+  <!-- Personal info -->
+  <div class="card profile-section">
+    <h3>Personal Information</h3>
+    <form id="profile-form">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+        <div class="form-group">
+          <label for="p-first-name">First name</label>
+          <input type="text" id="p-first-name" class="form-control" placeholder="John">
+        </div>
+        <div class="form-group">
+          <label for="p-last-name">Last name</label>
+          <input type="text" id="p-last-name" class="form-control" placeholder="Doe">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="p-email">Email address</label>
+        <input type="email" id="p-email" class="form-control" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label for="p-phone">Phone number</label>
+        <input type="tel" id="p-phone" class="form-control" placeholder="+1 555 0100">
+      </div>
+      <div class="form-group">
+        <label for="p-address">Shipping address</label>
+        <input type="text" id="p-address" class="form-control" placeholder="123 Main St, Springfield">
+      </div>
+      <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+  </div>
+
+  <!-- Password change -->
+  <div id="password-alert"></div>
+  <div class="card profile-section">
+    <h3>Change Password</h3>
+    <form id="password-form">
+      <div class="form-group">
+        <label for="current-password">Current password</label>
+        <input type="password" id="current-password" class="form-control" required autocomplete="current-password">
+      </div>
+      <div class="form-group">
+        <label for="new-password">New password <small style="font-weight:400">(min. 8 characters)</small></label>
+        <input type="password" id="new-password" class="form-control" required autocomplete="new-password">
+      </div>
+      <div class="form-group">
+        <label for="confirm-password">Confirm new password</label>
+        <input type="password" id="confirm-password" class="form-control" required autocomplete="new-password">
+      </div>
+      <button type="submit" class="btn btn-primary">Update Password</button>
+    </form>
+  </div>
+</div>
+
+<script src="/static/js/api.js"></script>
+<script src="/static/js/profile.js"></script>
+</body>
+</html>

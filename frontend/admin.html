@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel — FurniShop</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container navbar-inner">
+    <a href="/static/index.html" class="navbar-brand">FurniShop</a>
+    <ul class="navbar-links">
+      <li><a href="/static/index.html">Shop</a></li>
+      <li><a href="/static/cart.html">Cart <span id="nav-cart-badge"></span></a></li>
+      <li><a href="/static/profile.html" id="nav-profile" style="display:none">Profile</a></li>
+      <li><a href="/static/admin.html" class="active" id="nav-admin">Admin</a></li>
+      <li><a href="/static/auth.html" id="nav-login" class="btn-nav-login" style="display:none">Sign In</a></li>
+      <li><a href="#" id="nav-logout">Sign Out</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container admin-page">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem">
+    <h1 style="font-size:1.5rem">Admin Panel</h1>
+    <button id="add-product-btn" class="btn btn-primary">+ Add Product</button>
+  </div>
+
+  <div class="admin-tabs">
+    <button class="admin-tab active" data-tab="products">Products</button>
+    <button class="admin-tab" data-tab="categories">Categories</button>
+  </div>
+
+  <!-- Products panel -->
+  <div id="panel-products" class="admin-panel">
+    <div id="products-table"></div>
+  </div>
+
+  <!-- Categories panel -->
+  <div id="panel-categories" class="admin-panel" style="display:none">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start">
+      <div>
+        <h3 style="margin-bottom:1rem">Existing Categories</h3>
+        <div id="cat-list"></div>
+      </div>
+      <div class="card" style="padding:1.5rem">
+        <h3 style="margin-bottom:1.25rem">Add Category</h3>
+        <div id="cat-alert"></div>
+        <form id="category-form">
+          <div class="form-group">
+            <label for="cat-name">Name</label>
+            <input type="text" id="cat-name" class="form-control" placeholder="e.g. Desks" required>
+          </div>
+          <div class="form-group">
+            <label for="cat-slug">Slug <small style="font-weight:400">(URL-friendly, unique)</small></label>
+            <input type="text" id="cat-slug" class="form-control" placeholder="e.g. desks" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Create Category</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Product modal -->
+<div id="modal-overlay" class="modal-overlay">
+  <div class="modal">
+    <h3 id="modal-title">Add Product</h3>
+    <div id="modal-alert"></div>
+    <form id="product-form">
+      <div class="form-group">
+        <label for="modal-name">Product name *</label>
+        <input type="text" id="modal-name" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="modal-description">Description</label>
+        <textarea id="modal-description" class="form-control" rows="3" style="resize:vertical"></textarea>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+        <div class="form-group">
+          <label for="modal-price">Price ($) *</label>
+          <input type="number" id="modal-price" class="form-control" step="0.01" min="0" required>
+        </div>
+        <div class="form-group">
+          <label for="modal-stock">Stock *</label>
+          <input type="number" id="modal-stock" class="form-control" min="0" required>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+        <div class="form-group">
+          <label for="modal-material">Material</label>
+          <input type="text" id="modal-material" class="form-control" placeholder="e.g. Oak">
+        </div>
+        <div class="form-group">
+          <label for="modal-color">Color</label>
+          <input type="text" id="modal-color" class="form-control" placeholder="e.g. Gray">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="modal-category">Category</label>
+        <select id="modal-category" class="form-control">
+          <option value="">— No category —</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Product Image</label>
+        <div id="modal-img-preview-box">
+          <img id="modal-img-preview" alt="Preview">
+          <span id="modal-img-placeholder">No image selected</span>
+        </div>
+        <input type="file" id="modal-image-file" accept="image/jpeg,image/png,image/webp,image/gif">
+        <div style="display:flex;gap:0.5rem;margin-top:0.6rem">
+          <button type="button" id="btn-choose-img" class="btn btn-secondary btn-sm">Choose file…</button>
+          <button type="button" id="btn-remove-img" class="btn btn-danger btn-sm" style="display:none">Remove</button>
+          <span id="img-upload-status" style="font-size:0.8rem;color:var(--color-text-muted);align-self:center"></span>
+        </div>
+        <input type="hidden" id="modal-image-url">
+        <p style="margin-top:0.6rem;margin-bottom:0.3rem;font-size:0.8rem;color:var(--color-text-muted)">or paste a URL:</p>
+        <input type="text" id="modal-image-url-text" class="form-control" placeholder="https://...">
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="modal-cancel" class="btn btn-secondary">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Product</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="/static/js/api.js"></script>
+<script src="/static/js/admin.js"></script>
+</body>
+</html>

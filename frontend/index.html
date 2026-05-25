@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FurniShop — Quality Furniture</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container navbar-inner">
+    <a href="/static/index.html" class="navbar-brand">FurniShop</a>
+    <ul class="navbar-links">
+      <li><a href="/static/index.html" class="active">Shop</a></li>
+      <li><a href="/static/cart.html">Cart <span id="nav-cart-badge"></span></a></li>
+      <li><a href="/static/profile.html" id="nav-profile" style="display:none">Profile</a></li>
+      <li><a href="/static/admin.html" id="nav-admin" style="display:none">Admin</a></li>
+      <li><a href="/static/auth.html" id="nav-login" class="btn-nav-login">Sign In</a></li>
+      <li><a href="#" id="nav-logout" style="display:none">Sign Out</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="page-layout">
+
+    <!-- Sidebar Filters -->
+    <aside class="filter-sidebar">
+      <div class="card">
+        <h3>Filters</h3>
+        <form id="filter-form">
+          <div class="filter-group">
+            <label for="filter-category">Category</label>
+            <select id="filter-category" class="form-control">
+              <option value="">All categories</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label>Price range ($)</label>
+            <div class="price-range">
+              <input type="number" id="filter-min-price" class="form-control" placeholder="Min" min="0">
+              <input type="number" id="filter-max-price" class="form-control" placeholder="Max" min="0">
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <label for="filter-material">Material</label>
+            <input type="text" id="filter-material" class="form-control" placeholder="e.g. Oak, Fabric">
+          </div>
+
+          <div class="filter-group">
+            <label for="filter-color">Color</label>
+            <input type="text" id="filter-color" class="form-control" placeholder="e.g. Gray, Brown">
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-full">Apply Filters</button>
+          <button type="button" id="filter-reset" class="btn btn-secondary btn-full" style="margin-top:0.5rem">Reset</button>
+        </form>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:0.75rem">
+        <div class="search-bar" style="flex:1;min-width:200px;margin:0">
+          <input type="text" id="search-input" class="form-control" placeholder="Search furniture...">
+        </div>
+        <div style="display:flex;align-items:center;gap:0.5rem">
+          <label for="sort-select" style="white-space:nowrap;font-size:0.875rem;color:var(--color-text-muted)">Sort by:</label>
+          <select id="sort-select" class="form-control" style="width:auto">
+            <option value="created_at_desc">Newest</option>
+            <option value="price_asc">Price: Low to High</option>
+            <option value="price_desc">Price: High to Low</option>
+            <option value="name_asc">Name A–Z</option>
+          </select>
+        </div>
+      </div>
+
+      <p id="result-count" style="font-size:0.875rem;color:var(--color-text-muted);margin-bottom:1rem"></p>
+
+      <div id="product-grid" class="product-grid"></div>
+      <div id="pagination" class="pagination"></div>
+    </main>
+
+  </div>
+</div>
+
+<script src="/static/js/api.js"></script>
+<script src="/static/js/shop.js"></script>
+</body>
+</html>
